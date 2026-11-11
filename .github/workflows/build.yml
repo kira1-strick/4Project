@@ -3,8 +3,7 @@ name: Build APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -34,9 +33,13 @@ jobs:
         with:
           packages: 'platform-tools'
 
-      - name: Install Android SDK Packages
+      - name: Accept SDK Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install Android SDK
         run: |
-          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager --install "platforms;android-35"
+          sdkmanager --install "build-tools;35.0.0"
 
       - name: Build APK
         run: gradle --no-daemon assembleDebug
