@@ -22,20 +22,24 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: '17'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.9
+          gradle-version: '8.9'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
         with:
-          packages: "platforms;android-35,build-tools;35.0.0"
+          packages: 'platform-tools'
+
+      - name: Install Android SDK Packages
+        run: |
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
 
       - name: Build APK
-        run: gradle assembleDebug
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
